@@ -9,7 +9,7 @@
         <form>
           <div class="input-group">
             <input type="url" class="form-control" id="siteUrlInput">
-            <button type="submit" class="btn btn-primary">start</button>
+            <div class="btn ar-btn-primary" @click="onStartClicked">start</div>
           </div>
         </form>
       </div>
@@ -18,7 +18,7 @@
 
     <div class="row mt-5">
       <div class="col-md-9 bg-light">
-        video pane
+        {{ data }}
       </div>
       <div class="col-md-3 bg-light">
         Play list..
@@ -28,7 +28,13 @@
 </template>
 
 <script setup>
+const data = ref(null)
+
+async function onStartClicked() {
+  data.value = await useFetch('http://localhost:3001/', {
+    method: 'GET',
+    mode: 'no-cors',
+  })
+}
 
 </script>
-
-<style scoped></style>
