@@ -31,10 +31,12 @@
 const data = ref(null)
 
 async function onStartClicked() {
-  data.value = await useFetch('http://localhost:3001/', {
-    method: 'GET',
-    mode: 'no-cors',
-  })
+  // data.value = await useFetch('http://localhost:3001/', {
+  //   method: 'GET',
+  //   mode: 'no-cors',
+  // })
+  const data2 = await fetch('http://localhost:3001/')
+  console.log(await data2.json())
 }
 
 </script>
