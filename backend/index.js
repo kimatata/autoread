@@ -22,33 +22,17 @@ const puppeteer = require("puppeteer");
 main();
 
 async function main() {
-  const anyUrl = "https://nullnull.dev/blog/web-scraping-in-node-js/";
+  const targetUrl = "https://nullnull.dev/blog/web-scraping-in-node-js/";
 
   const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
-  await page.goto(anyUrl);
-  // const html = await page.content();
-  // console.log(html);
+  await page.goto(targetUrl);
 
-  // ページのDOMを取得する
-  const document = await page.evaluate(() => {
-    return document;
+  // <h>count
+  const ret = await page.$$eval("h1, h2, h3, h4, h5, h6", (elements) => {
+    return elements.map(e => e.innerText);
   });
-  const rootNode = document.documentElement;
-  const domTree = nodeToObject(rootNode)
-  // const domTree = await page.evaluate(getDOMTree());
-  console.log(domTree);
 
+  console.log(ret);
   await browser.close();
-}
-
-function nodeToObject(rootNode) {
-  const object = {};
-  object.tagName = rootNode.tagName;
-  object.children = [];
-  for (let i = 0; i < rootNode.children.length; i++) {
-    const child = rootNode.children[i];
-    object.children.push(nodeToObject(child));
-  }
-  return object;
 }
