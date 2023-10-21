@@ -1,15 +1,8 @@
 # AutoRead
 
-## フロントエンドサーバーの起動
+## puppeteerにより情報を収集する
 
 ```bash
-cd frontend
-yarn dev -o
-```
-
-## バックエンドサーバーの起動
-
-```bash
-cd backend
+npm install
 node index.js
 ```

@@ -1,4 +1,10 @@
 {
-  "name": "autoread",
-  "private": true
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "puppeteer": "^20.1.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
 }
