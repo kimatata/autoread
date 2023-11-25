@@ -48,18 +48,48 @@ async function main() {
   console.log("main: moved to library");
 
   // ブックにの1ページ目に移動
-  await page.goto("https://officialcomptiastudyguides.webreader.io/#!/reader/6a2c26c3-b5f6-4fdf-bb0f-f2c31319e8f5/page/page-4f8c4b71c56dd4741c7e47eb395e4d62");
+  await page.goto("https://officialcomptiastudyguides.webreader.io/#!/reader/6a2c26c3-b5f6-4fdf-bb0f-f2c31319e8f5/page/page-8c4310d62412dce9a34035480a697194");
   await page.waitForTimeout(6000);
   await page.screenshot({ path: ".output/book.png" });
   console.log("main: moved to book");
 
   // サイドバーを除く部分のスクリーンショットを取得
-  const selector = '.reader-wrapper';
+  let selector = '.reader-wrapper';
   await page.waitForSelector(selector);
   const element = await page.$(selector);
   const boundingBox = await element.boundingBox();
-  await page.screenshot({ path: '.output/book_trim.png', clip: boundingBox });
-  console.log("main: clip page");
+  await page.screenshot({ path: '.output/first_page.png', clip: boundingBox });
+  console.log("main: clip first page");
+
+  // 次のページに移動
+  await page.screenshot({ path: '.output/second_page0.png' });
+  await page.waitForTimeout(6000);
+
+  await page.focus('#go-to-page-input');
+  await page.evaluate(() => {
+    document.querySelector('#go-to-page-input').value = '10';
+  });
+  const valueAfterTyping = await page.$eval('#go-to-page-input', (input) => input.value);
+  console.log('Value after typing:', valueAfterTyping);
+  await page.screenshot({ path: '.output/second_page1.png' });
+  await page.waitForTimeout(6000);
+  await page.screenshot({ path: '.output/second_page2.png' });
+
+  // await page.focus('#go-to-page-input');
+  await page.keyboard.press('Enter');
+  await page.screenshot({ path: '.output/second_page3.png' });
+  await page.waitForTimeout(6000);
+
+  await page.screenshot({ path: '.output/second_page4.png' });
+  console.log("main: clip second page");
+
+  // selector = '#next-page'
+  // await page.waitForSelector(selector);
+
+  // await page.click(selector);
+  // await page.waitForTimeout(6000);
+  // await page.screenshot({ path: '.output/second_page.png', clip: boundingBox });
+  // console.log("main: clip second page");
 
   await browser.close();
 }
