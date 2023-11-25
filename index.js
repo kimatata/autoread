@@ -4,6 +4,7 @@ dotenv.config();
 
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
+const bookPages = require('./bookPages');
 
 main();
 
@@ -11,7 +12,7 @@ async function main() {
   const browser = await puppeteer.launch({ headless: "new" });
 
   const page = await browser.newPage();
-  await page.setViewport({ width: 1200, height: 1200 });
+  await page.setViewport({ width: 1400, height: 1400 });
   await page.goto("https://login.comptia.org/"); // ログイン画面に移動
   await page.waitForSelector("input#signInName"); // ログイン情報入力タグが表示されるまで待機
 
@@ -47,49 +48,30 @@ async function main() {
   await page.screenshot({ path: ".output/library.png" });
   console.log("main: moved to library");
 
-  // ブックにの1ページ目に移動
-  await page.goto("https://officialcomptiastudyguides.webreader.io/#!/reader/6a2c26c3-b5f6-4fdf-bb0f-f2c31319e8f5/page/page-8c4310d62412dce9a34035480a697194");
-  await page.waitForTimeout(6000);
-  await page.screenshot({ path: ".output/book.png" });
-  console.log("main: moved to book");
+  // ページ遷移
+  const start = 1
+  const end = 60
+  let i
+  let targetUrl = ""
+  const slicedBookPages = bookPages.slice(start, end + 1);
 
-  // サイドバーを除く部分のスクリーンショットを取得
-  let selector = '.reader-wrapper';
-  await page.waitForSelector(selector);
-  const element = await page.$(selector);
-  const boundingBox = await element.boundingBox();
-  await page.screenshot({ path: '.output/first_page.png', clip: boundingBox });
-  console.log("main: clip first page");
+  // クリップ
+  const selector = '.reader-wrapper';
+  let element
+  let boundingBox
 
-  // 次のページに移動
-  await page.screenshot({ path: '.output/second_page0.png' });
-  await page.waitForTimeout(6000);
+  for (i = 0; i < slicedBookPages.length; i++) {
+    targetUrl = "https://officialcomptiastudyguides.webreader.io/#!/reader/6a2c26c3-b5f6-4fdf-bb0f-f2c31319e8f5/page/" + slicedBookPages[i].path
+    await page.goto(targetUrl);
+    console.log("moveto to page:" + (i + start) + " url:" + targetUrl)
+    await page.waitForTimeout(6000);
 
-  await page.focus('#go-to-page-input');
-  await page.evaluate(() => {
-    document.querySelector('#go-to-page-input').value = '10';
-  });
-  const valueAfterTyping = await page.$eval('#go-to-page-input', (input) => input.value);
-  console.log('Value after typing:', valueAfterTyping);
-  await page.screenshot({ path: '.output/second_page1.png' });
-  await page.waitForTimeout(6000);
-  await page.screenshot({ path: '.output/second_page2.png' });
-
-  // await page.focus('#go-to-page-input');
-  await page.keyboard.press('Enter');
-  await page.screenshot({ path: '.output/second_page3.png' });
-  await page.waitForTimeout(6000);
-
-  await page.screenshot({ path: '.output/second_page4.png' });
-  console.log("main: clip second page");
-
-  // selector = '#next-page'
-  // await page.waitForSelector(selector);
-
-  // await page.click(selector);
-  // await page.waitForTimeout(6000);
-  // await page.screenshot({ path: '.output/second_page.png', clip: boundingBox });
-  // console.log("main: clip second page");
+    // サイドバーを除く範囲のスクリーンショットを取得
+    await page.waitForSelector(selector);
+    element = await page.$(selector);
+    boundingBox = await element.boundingBox();
+    await page.screenshot({ path: "book/" + (i + start) + ".png", clip: boundingBox  });
+  }
 
   await browser.close();
 }
