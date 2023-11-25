@@ -47,12 +47,19 @@ async function main() {
   await page.screenshot({ path: ".output/library.png" });
   console.log("main: moved to library");
 
-
   // ブックにの1ページ目に移動
   await page.goto("https://officialcomptiastudyguides.webreader.io/#!/reader/6a2c26c3-b5f6-4fdf-bb0f-f2c31319e8f5/page/page-4f8c4b71c56dd4741c7e47eb395e4d62");
-  await page.waitForTimeout(5000);
+  await page.waitForTimeout(6000);
   await page.screenshot({ path: ".output/book.png" });
-  console.log("main: moved to a book");
+  console.log("main: moved to book");
+
+  // サイドバーを除く部分のスクリーンショットを取得
+  const selector = '.reader-wrapper';
+  await page.waitForSelector(selector);
+  const element = await page.$(selector);
+  const boundingBox = await element.boundingBox();
+  await page.screenshot({ path: '.output/book_trim.png', clip: boundingBox });
+  console.log("main: clip page");
 
   await browser.close();
 }
