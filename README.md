@@ -21,9 +21,9 @@ PASSWORD=***
 
 ## ページURL一覧の準備
 
-### pupeteerだけではページ遷移ができない
+### puppeteerだけではページ遷移ができない
 
-pupeteerでComptiaのテキストにアクセスできても、「次のページ」ボタンはpupeteerで押せなくなっている（おそらくスクレイピング対策）。そのためpupeteerでテキストのあるページにアクセスしても、そこから他のページに遷移できなかった。
+puppeteerでComptiaのテキストにアクセスできても、「次のページ」ボタンはpuppeteerで押せなくなっている（おそらくスクレイピング対策）。そのためpuppeteerでテキストのあるページにアクセスしても、そこから他のページに遷移できなかった。
 
 ![クリック不可](./assets/cannotclick.png)
 
@@ -38,11 +38,11 @@ pupeteerでComptiaのテキストにアクセスできても、「次のペー�
 
 JavaScriptが各ページのurlを生成している以上、JavaScriptの変数には各ページのid情報が含まれている。なのでその変数情報を直接取得する。
 
-ComptiaのサイトはフロントエンドフレームワークにAngularを使用している。
+ComptiaのサイトはフロントエンドフレームワークにAngularJSを使用している。
 
-以下のAngularデバッグ用の拡張機能をインストールすればAngularが保持している変数を見ることができる。
+以下のAngularJSデバッグ用の拡張機能をインストールすればAngularJSが保持している変数を見ることができる。
 
-![拡張機能](./assets/angular.png)
+![拡張機能](./assets/angularJS.png)
 
 [https://chromewebstore.google.com/detail/ng-inspect-for-angular1x4/onfmmmemcmipkohkkgofiojpiahbpogh](https://chromewebstore.google.com/detail/ng-inspect-for-angular1x4/onfmmmemcmipkohkkgofiojpiahbpogh)
 
